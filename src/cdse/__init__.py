@@ -26,6 +26,11 @@ from cdse.odata import (
     ProductPage,
     build_orderby,
 )
+from cdse.stac import (
+    Collection,
+    Item,
+    ItemCollection,
+)
 
 __version__ = "0.1.0"
 
@@ -35,7 +40,10 @@ __all__ = [
     "CdseHTTPError",
     "Client",
     "ClientCredentialsAuth",
+    "Collection",
     "FilterBuilder",
+    "Item",
+    "ItemCollection",
     "NotFoundError",
     "PasswordAuth",
     "Product",

@@ -19,6 +19,10 @@ DEFAULT_TOKEN_URL = (
 #: Base URL of the OData catalogue API (without a trailing slash).
 DEFAULT_ODATA_URL = "https://catalogue.dataspace.copernicus.eu/odata/v1"
 
+#: Base URL of the STAC API (without a trailing slash). The earlier
+#: ``catalogue.dataspace.copernicus.eu/stac`` host was deprecated in 2025.
+DEFAULT_STAC_URL = "https://stac.dataspace.copernicus.eu/v1"
+
 #: Public Keycloak client identifier used for the password and refresh grants.
 DEFAULT_CLIENT_ID = "cdse-public"
 
@@ -34,6 +38,7 @@ class Settings(BaseSettings):
 
     token_url: str = DEFAULT_TOKEN_URL
     odata_url: str = DEFAULT_ODATA_URL
+    stac_url: str = DEFAULT_STAC_URL
     client_id: str = DEFAULT_CLIENT_ID
 
     # Optional credentials, convenient for command line and continuous
