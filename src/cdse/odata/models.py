@@ -125,6 +125,48 @@ class DeletedProductPage(BaseModel):
     count: int | None = Field(default=None, alias="@odata.count")
 
 
+class Burst(BaseModel):
+    """A Sentinel-1 SLC burst from the ``Bursts`` collection."""
+
+    model_config = _CONFIG
+
+    id: str = Field(alias="Id")
+    name: str = Field(alias="Name")
+    content_type: str | None = Field(default=None, alias="ContentType")
+    s3_path: str | None = Field(default=None, alias="S3Path")
+    content_date: ContentDate | None = Field(default=None, alias="ContentDate")
+    footprint: str | None = Field(default=None, alias="Footprint")
+    geo_footprint: dict[str, Any] | None = Field(default=None, alias="GeoFootprint")
+    parent_product_id: str | None = Field(default=None, alias="ParentProductId")
+    parent_product_name: str | None = Field(default=None, alias="ParentProductName")
+    parent_product_type: str | None = Field(default=None, alias="ParentProductType")
+    burst_id: int | None = Field(default=None, alias="BurstId")
+    absolute_burst_id: int | None = Field(default=None, alias="AbsoluteBurstId")
+    swath_identifier: str | None = Field(default=None, alias="SwathIdentifier")
+    relative_orbit_number: int | None = Field(default=None, alias="RelativeOrbitNumber")
+    orbit_direction: str | None = Field(default=None, alias="OrbitDirection")
+    platform_serial_identifier: str | None = Field(
+        default=None, alias="PlatformSerialIdentifier"
+    )
+    polarisation_channels: str | None = Field(
+        default=None, alias="PolarisationChannels"
+    )
+    operational_mode: str | None = Field(default=None, alias="OperationalMode")
+    datatake_id: int | None = Field(default=None, alias="DatatakeID")
+    lines: int | None = Field(default=None, alias="Lines")
+    samples_per_burst: int | None = Field(default=None, alias="SamplesPerBurst")
+
+
+class BurstPage(BaseModel):
+    """A single page of a bursts query."""
+
+    model_config = _CONFIG
+
+    value: list[Burst] = Field(default_factory=list)
+    next_link: str | None = Field(default=None, alias="@odata.nextLink")
+    count: int | None = Field(default=None, alias="@odata.count")
+
+
 class NodeLink(BaseModel):
     """A link to the children of a node."""
 
