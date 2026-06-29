@@ -141,14 +141,24 @@ uv run pytest
 
 ## Branching Model
 
-The `main` branch is protected and must always remain in a releasable state.
-Direct pushes to `main` are not permitted. All work happens on dedicated
-branches that are merged through pull requests.
+This project uses a two trunk branching model with long lived `main` and
+`develop` branches.
+
+- `main` always reflects the latest released version. Every commit on `main`
+  corresponds to a tagged release. Nothing is committed to `main` directly
+  except release merges.
+- `develop` is the integration branch where completed work accumulates between
+  releases. It must always remain in a working, testable state.
+
+All day to day work happens on short lived branches that are created from
+`develop` and merged back into `develop` through pull requests. A release is
+performed by merging `develop` into `main` and tagging that commit.
 
 ### Branch Naming
 
 Use short, descriptive branch names that begin with a category prefix and use
-hyphens to separate words. The recommended prefixes are:
+hyphens to separate words. Always branch from the current `develop`. The
+recommended prefixes are:
 
 - `feature/` for new functionality, for example `feature/oauth-token-refresh`.
 - `fix/` for bug fixes, for example `fix/rate-limit-retry`.
@@ -160,14 +170,30 @@ hyphens to separate words. The recommended prefixes are:
 When a branch addresses a tracked issue, include the issue number in the name,
 for example `fix/142-token-expiry`.
 
+A typical cycle looks like this:
+
+```bash
+git switch develop
+git pull origin develop
+git switch -c feature/oauth-token-refresh
+# work, commit, push, open a pull request into develop
+```
+
+### Hotfixes
+
+An urgent fix to the released version is the only exception to the rule that
+work starts from `develop`. A hotfix branch is created from `main`, named with
+the `fix/` prefix, and after review it is merged into `main` as a patch release
+and then merged back into `develop` so the fix is not lost.
+
 ### Keeping Branches Current
 
-Keep your branch up to date with `main` while you work. We prefer rebasing over
-merging to keep the history linear and easy to read:
+Keep your branch up to date with `develop` while you work. We prefer rebasing
+over merging to keep the history linear and easy to read:
 
 ```bash
 git fetch origin
-git rebase origin/main
+git rebase origin/develop
 ```
 
 Resolve any conflicts locally, run the full set of checks again, and then
@@ -227,9 +253,10 @@ impact and the migration path.
 
 ## Pull Requests
 
-1. Make sure your branch is rebased on the latest `main` and that all checks
+1. Make sure your branch is rebased on the latest `develop` and that all checks
    pass locally.
-2. Push your branch and open a pull request against `main`.
+2. Push your branch and open a pull request against `develop`. The only pull
+   requests that target `main` are release merges and hotfixes.
 3. Fill in the pull request description. Explain the motivation, summarize the
    changes, and link any related issues using a closing keyword such as
    `Closes #142`.
@@ -245,7 +272,7 @@ impact and the migration path.
   merged.
 - Continuous integration must be green.
 - We merge using the squash strategy so that each pull request becomes a single
-  commit on `main`. The squash commit message must follow the Conventional
+  commit on `develop`. The squash commit message must follow the Conventional
   Commits format described above.
 
 ## Testing
@@ -275,25 +302,36 @@ version number `MAJOR.MINOR.PATCH`:
 While the project is below version `1.0.0`, the public interface should be
 considered unstable, and minor versions may include breaking changes.
 
-### Tagging a Release
+### Cutting a Release
 
-Releases are cut from `main` by a maintainer. The process is:
+Releases are cut by a maintainer by promoting `develop` to `main` and tagging
+the result. The process is:
 
-1. Ensure `main` is green and contains all changes intended for the release.
-2. Update the version in `pyproject.toml`.
-3. Update the changelog.
-4. Create an annotated, signed tag that matches the version, prefixed with `v`:
+1. Ensure `develop` is green and contains all changes intended for the release.
+2. On `develop`, update the version in `pyproject.toml` and in
+   `src/cdse/__init__.py`, then move the entries under the `Unreleased` heading
+   of `CHANGELOG.md` into a new section for the version. Commit this on
+   `develop`.
+3. Open a pull request from `develop` into `main` and merge it once it is
+   approved and green. This pull request is merged with a regular merge commit,
+   not squashed, so that the release history is preserved.
+4. Check out `main`, pull the merge, and create an annotated, signed tag that
+   matches the version, prefixed with `v`:
 
    ```bash
+   git switch main
+   git pull origin main
    git tag -a -s v0.2.0 -m "Release 0.2.0"
    git push origin v0.2.0
    ```
 
-5. Pushing the tag triggers the release workflow, which builds and publishes the
-   package.
+5. Pushing the tag triggers the publish workflow (`pypi-workflow.yml`), which
+   builds the distributions and publishes them to PyPI using a trusted
+   publisher, so no API token is stored in the repository.
 
 Tags must always point to a commit on `main` and must never be moved or deleted
-once published.
+once published. After the release, `main` is merged back into `develop` if the
+release introduced any commits that are not already present there.
 
 ## Reporting Issues
 

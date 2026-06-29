@@ -1,0 +1,30 @@
+"""Top level Typer application for the ``cdse`` command."""
+
+from __future__ import annotations
+
+import typer
+
+from cdse.cli.auth import app as auth_app
+from cdse.cli.bursts import app as bursts_app
+from cdse.cli.odata import app as odata_app
+from cdse.cli.s3 import app as s3_app
+from cdse.cli.stac import app as stac_app
+from cdse.cli.subscriptions import app as subscriptions_app
+from cdse.cli.traceability import app as traceability_app
+
+app = typer.Typer(
+    help="Command line client for the Copernicus Data Space Ecosystem.",
+    no_args_is_help=True,
+)
+app.add_typer(auth_app, name="auth")
+app.add_typer(odata_app, name="odata")
+app.add_typer(stac_app, name="stac")
+app.add_typer(s3_app, name="s3")
+app.add_typer(bursts_app, name="bursts")
+app.add_typer(subscriptions_app, name="subscriptions")
+app.add_typer(traceability_app, name="traceability")
+
+
+def main() -> None:
+    """Console script entry point."""
+    app()
