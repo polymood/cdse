@@ -2,6 +2,15 @@
   <img src="assets/banner.png" alt="Sentinel-2 imagery over six locations, fetched with cdse" width="100%">
 </p>
 
+<p align="center">
+  <a href="https://pypi.org/project/cdse/"><img src="https://img.shields.io/pypi/v/cdse.svg" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/cdse/"><img src="https://img.shields.io/pypi/pyversions/cdse.svg" alt="Supported Python versions"></a>
+  <a href="https://github.com/polymood/cdse/actions/workflows/ci.yml"><img src="https://github.com/polymood/cdse/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+  <a href="https://github.com/polymood/cdse/blob/main/LICENSE"><img src="https://img.shields.io/github/license/polymood/cdse.svg" alt="License"></a>
+  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Linted with Ruff"></a>
+  <a href="https://mypy-lang.org/"><img src="https://www.mypy-lang.org/static/mypy_badge.svg" alt="Checked with mypy"></a>
+</p>
+
 # cdse
 
 A Python client and command line tool for the
