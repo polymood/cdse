@@ -4,11 +4,14 @@ from __future__ import annotations
 
 from cdse.odata.api import OData
 from cdse.odata.attributes import AttributesResource
+from cdse.odata.bursts import BurstsResource
 from cdse.odata.deleted import DeletedProductsResource
 from cdse.odata.models import (
     Asset,
     Attribute,
     AttributeDefinition,
+    Burst,
+    BurstPage,
     Checksum,
     ContentDate,
     DeletedProduct,
@@ -34,6 +37,9 @@ __all__ = [
     "Attribute",
     "AttributeDefinition",
     "AttributesResource",
+    "Burst",
+    "BurstPage",
+    "BurstsResource",
     "Checksum",
     "ComparisonOperator",
     "ContentDate",
