@@ -6,6 +6,7 @@ import typer
 
 from cdse.cli.auth import app as auth_app
 from cdse.cli.odata import app as odata_app
+from cdse.cli.s3 import app as s3_app
 from cdse.cli.stac import app as stac_app
 
 app = typer.Typer(
@@ -15,6 +16,7 @@ app = typer.Typer(
 app.add_typer(auth_app, name="auth")
 app.add_typer(odata_app, name="odata")
 app.add_typer(stac_app, name="stac")
+app.add_typer(s3_app, name="s3")
 
 
 def main() -> None:
