@@ -26,6 +26,12 @@ DEFAULT_STAC_URL = "https://stac.dataspace.copernicus.eu/v1"
 #: Public Keycloak client identifier used for the password and refresh grants.
 DEFAULT_CLIENT_ID = "cdse-public"
 
+#: S3 endpoint for direct access to the ``eodata`` bucket.
+DEFAULT_S3_ENDPOINT_URL = "https://eodata.dataspace.copernicus.eu"
+
+#: Name of the S3 bucket holding the product archive.
+DEFAULT_S3_BUCKET = "eodata"
+
 
 class Settings(BaseSettings):
     """Runtime configuration, populated from arguments or the environment."""
@@ -66,3 +72,11 @@ class Settings(BaseSettings):
     # throttling is opt in. When set, the transport keeps requests under this
     # rate; otherwise it relies on reactive handling of rate limit responses.
     requests_per_minute: int | None = None
+
+    # Direct S3 access uses credentials generated separately from the account
+    # password, through the S3 keys manager portal.
+    s3_endpoint_url: str = DEFAULT_S3_ENDPOINT_URL
+    s3_bucket: str = DEFAULT_S3_BUCKET
+    s3_region: str = "default"
+    s3_access_key: str | None = None
+    s3_secret_key: str | None = None

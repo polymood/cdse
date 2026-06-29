@@ -26,6 +26,7 @@ from cdse.odata import (
     ProductPage,
     build_orderby,
 )
+from cdse.s3 import S3Client
 from cdse.stac import (
     Collection,
     Item,
@@ -52,6 +53,7 @@ __all__ = [
     "RateLimitError",
     "ReauthRequiredError",
     "RefreshTokenAuth",
+    "S3Client",
     "ServerError",
     "Settings",
     "TransportError",

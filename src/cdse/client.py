@@ -16,6 +16,7 @@ from cdse.auth.providers import AuthProvider
 from cdse.auth.store import TokenStore
 from cdse.config import Settings
 from cdse.odata.api import OData
+from cdse.s3 import S3Client
 from cdse.stac.api import Stac
 from cdse.transport import Transport
 
@@ -57,6 +58,8 @@ class Client:
         #: Access to the STAC catalogue: search, browse, and asset download.
         self.stac = Stac(self._transport, self._settings.stac_url)
 
+        self._s3: S3Client | None = None
+
     @property
     def settings(self) -> Settings:
         return self._settings
@@ -68,6 +71,16 @@ class Client:
     @property
     def auth(self) -> TokenManager:
         return self._tokens
+
+    @property
+    def s3(self) -> S3Client:
+        """Direct S3 access to the product archive.
+
+        Requires S3 credentials in the settings and the optional ``s3`` extra.
+        """
+        if self._s3 is None:
+            self._s3 = S3Client.from_settings(self._settings)
+        return self._s3
 
     def close(self) -> None:
         """Close the underlying HTTP connection pool."""
