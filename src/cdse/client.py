@@ -16,6 +16,7 @@ from cdse.auth.providers import AuthProvider
 from cdse.auth.store import TokenStore
 from cdse.config import Settings
 from cdse.odata.api import OData
+from cdse.stac.api import Stac
 from cdse.transport import Transport
 
 
@@ -52,6 +53,9 @@ class Client:
         #: Access to the OData catalogue endpoints (products, deleted
         #: products, and attributes).
         self.odata = OData(self._transport, self._settings.odata_url)
+
+        #: Access to the STAC catalogue: search, browse, and asset download.
+        self.stac = Stac(self._transport, self._settings.stac_url)
 
     @property
     def settings(self) -> Settings:
