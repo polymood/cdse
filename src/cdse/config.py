@@ -23,6 +23,9 @@ DEFAULT_ODATA_URL = "https://catalogue.dataspace.copernicus.eu/odata/v1"
 #: ``catalogue.dataspace.copernicus.eu/stac`` host was deprecated in 2025.
 DEFAULT_STAC_URL = "https://stac.dataspace.copernicus.eu/v1"
 
+#: Base URL of the traceability service, which is publicly readable.
+DEFAULT_TRACE_URL = "https://trace.dataspace.copernicus.eu/api/v1"
+
 #: Public Keycloak client identifier used for the password and refresh grants.
 DEFAULT_CLIENT_ID = "cdse-public"
 
@@ -45,6 +48,7 @@ class Settings(BaseSettings):
     token_url: str = DEFAULT_TOKEN_URL
     odata_url: str = DEFAULT_ODATA_URL
     stac_url: str = DEFAULT_STAC_URL
+    trace_url: str = DEFAULT_TRACE_URL
     client_id: str = DEFAULT_CLIENT_ID
 
     # Optional credentials, convenient for command line and continuous

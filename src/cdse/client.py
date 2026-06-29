@@ -19,6 +19,7 @@ from cdse.odata.api import OData
 from cdse.s3 import S3Client
 from cdse.stac.api import Stac
 from cdse.subscriptions import SubscriptionsResource
+from cdse.traceability import TraceabilityResource
 from cdse.transport import Transport
 
 
@@ -63,6 +64,9 @@ class Client:
         self.subscriptions = SubscriptionsResource(
             self._transport, self._settings.odata_url
         )
+
+        #: Look up product traceability records (public, unauthenticated).
+        self.traceability = TraceabilityResource(self._http, self._settings.trace_url)
 
         self._s3: S3Client | None = None
 

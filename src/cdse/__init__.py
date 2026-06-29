@@ -37,6 +37,7 @@ from cdse.subscriptions import (
     Subscription,
     SubscriptionsResource,
 )
+from cdse.traceability import Trace, TraceabilityResource
 
 __version__ = "0.1.0"
 
@@ -64,6 +65,8 @@ __all__ = [
     "Settings",
     "Subscription",
     "SubscriptionsResource",
+    "Trace",
+    "TraceabilityResource",
     "TransportError",
     "__version__",
     "build_orderby",
