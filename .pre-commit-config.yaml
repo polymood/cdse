@@ -21,9 +21,14 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.14.1
+  # Run mypy through uv so it uses the project environment and the same
+  # configuration as continuous integration, rather than an isolated env that
+  # would not see the runtime dependencies.
+  - repo: local
     hooks:
       - id: mypy
-        additional_dependencies: []
-        args: [--strict]
+        name: mypy
+        entry: uv run mypy .
+        language: system
+        pass_filenames: false
+        always_run: true
