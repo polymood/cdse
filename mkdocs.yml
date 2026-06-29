@@ -1,0 +1,65 @@
+site_name: cdse
+site_description: Python client for the Copernicus Data Space Ecosystem APIs
+repo_url: https://github.com/polymood/cdse
+repo_name: polymood/cdse
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_root_heading: true
+            show_source: false
+            members_order: source
+            separate_signature: true
+            show_signature_annotations: true
+            merge_init_into_class: true
+            filters: ["!^_"]
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - Guide:
+      - Filters: filters.md
+      - Configuration: configuration.md
+      - Usage by API: usage.md
+      - Command line: cli.md
+  - API reference:
+      - Client: reference/client.md
+      - Authentication: reference/auth.md
+      - OData: reference/odata.md
+      - STAC: reference/stac.md
+      - S3: reference/s3.md
+      - Subscriptions: reference/subscriptions.md
+      - Traceability: reference/traceability.md
+      - Configuration and errors: reference/config.md

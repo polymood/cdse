@@ -215,6 +215,12 @@ client = Client(PasswordAuth("you@example.com", "pw"), settings=settings)
 - openEO and Sentinel Hub are intentionally out of scope, as both already have
   dedicated Python clients.
 
+## Documentation
+
+Full documentation, including the complete API reference, is published at
+[polymood.github.io/cdse](https://polymood.github.io/cdse/). Runnable examples
+for every API live in the [examples directory](examples/).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the development setup, branching
