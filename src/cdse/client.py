@@ -18,6 +18,7 @@ from cdse.config import Settings
 from cdse.odata.api import OData
 from cdse.s3 import S3Client
 from cdse.stac.api import Stac
+from cdse.subscriptions import SubscriptionsResource
 from cdse.transport import Transport
 
 
@@ -57,6 +58,11 @@ class Client:
 
         #: Access to the STAC catalogue: search, browse, and asset download.
         self.stac = Stac(self._transport, self._settings.stac_url)
+
+        #: Manage standing-query subscriptions for new or changed products.
+        self.subscriptions = SubscriptionsResource(
+            self._transport, self._settings.odata_url
+        )
 
         self._s3: S3Client | None = None
 

@@ -9,6 +9,7 @@ from cdse.cli.bursts import app as bursts_app
 from cdse.cli.odata import app as odata_app
 from cdse.cli.s3 import app as s3_app
 from cdse.cli.stac import app as stac_app
+from cdse.cli.subscriptions import app as subscriptions_app
 
 app = typer.Typer(
     help="Command line client for the Copernicus Data Space Ecosystem.",
@@ -19,6 +20,7 @@ app.add_typer(odata_app, name="odata")
 app.add_typer(stac_app, name="stac")
 app.add_typer(s3_app, name="s3")
 app.add_typer(bursts_app, name="bursts")
+app.add_typer(subscriptions_app, name="subscriptions")
 
 
 def main() -> None:
