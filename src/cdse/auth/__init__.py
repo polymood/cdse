@@ -9,11 +9,12 @@ from cdse.auth.providers import (
     PasswordAuth,
     RefreshTokenAuth,
 )
-from cdse.auth.store import MemoryTokenStore, TokenSet, TokenStore
+from cdse.auth.store import FileTokenStore, MemoryTokenStore, TokenSet, TokenStore
 
 __all__ = [
     "AuthProvider",
     "ClientCredentialsAuth",
+    "FileTokenStore",
     "MemoryTokenStore",
     "PasswordAuth",
     "RefreshTokenAuth",
