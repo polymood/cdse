@@ -47,6 +47,8 @@ packages = ["src/cdse"]
 line-length = 88
 target-version = "py312"
 src = ["src", "tests"]
+# Ad-hoc utility scripts are not part of the typed, linted package.
+extend-exclude = ["scripts"]
 
 [tool.ruff.lint]
 select = [
@@ -74,6 +76,7 @@ indent-style = "space"
 [tool.mypy]
 python_version = "3.12"
 strict = true
+exclude = ["scripts/"]
 warn_unused_configs = true
 warn_redundant_casts = true
 warn_unused_ignores = true
