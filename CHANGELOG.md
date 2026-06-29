@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-29
+
 ### Added
 
 - Authenticated client with OAuth2 password, refresh token, and client
@@ -27,4 +29,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - A `cdse` command line interface for authentication, search, and download,
   with a file backed session store, available through the optional `cli` extra.
 
-[Unreleased]: https://github.com/polymood/cdse/compare/HEAD...HEAD
+[Unreleased]: https://github.com/polymood/cdse/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/polymood/cdse/releases/tag/v0.1.0
