@@ -9,9 +9,12 @@ can stream through arbitrarily large result sets.
 from __future__ import annotations
 
 from collections.abc import Iterator, Sequence
+from pathlib import Path
+from urllib.parse import quote
 
-from cdse.odata.models import Product, ProductPage
-from cdse.odata.query import FilterBuilder
+from cdse.odata.download import DEFAULT_CHUNK_SIZE, download_to_file, parse_nodes
+from cdse.odata.models import Node, Product, ProductPage
+from cdse.odata.query import FilterBuilder, resolve_filter
 from cdse.transport import Transport
 
 
@@ -70,7 +73,7 @@ class ProductsResource:
     ) -> ProductPage:
         """Return a single page of results, optionally including the total count."""
         params: dict[str, str] = {}
-        filter_value = _filter_value(query)
+        filter_value = resolve_filter(query)
         if filter_value:
             params["$filter"] = filter_value
         if order_by is not None:
@@ -102,7 +105,7 @@ class ProductsResource:
     def count(self, query: str | FilterBuilder | None = None) -> int:
         """Return the number of products matching the query."""
         params: dict[str, str] = {}
-        filter_value = _filter_value(query)
+        filter_value = resolve_filter(query)
         if filter_value:
             params["$filter"] = filter_value
         response = self._transport.request(
@@ -118,11 +121,58 @@ class ProductsResource:
         )
         return ProductPage.model_validate(response.json()).value
 
+    def download(
+        self,
+        product_id: str,
+        destination: str | Path,
+        *,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        resume: bool = False,
+    ) -> Path:
+        """Download a whole product to ``destination`` as a zip archive."""
+        url = f"{self._products_url}({product_id})/$value"
+        return download_to_file(
+            self._transport,
+            url,
+            Path(destination),
+            chunk_size=chunk_size,
+            resume=resume,
+        )
 
-def _filter_value(query: str | FilterBuilder | None) -> str | None:
-    """Resolve a query argument to a filter string, or ``None`` when empty."""
-    if query is None:
-        return None
-    if isinstance(query, FilterBuilder):
-        return query.build() or None
-    return query or None
+    def list_nodes(self, product_id: str, *path: str) -> list[Node]:
+        """List the nodes inside a product, optionally at a nested path.
+
+        Calling without a path lists the product root; passing node names
+        descends into the file tree.
+        """
+        url = f"{self._products_url}{_node_segments(product_id, path)}/Nodes"
+        response = self._transport.request("GET", url)
+        return parse_nodes(response.json())
+
+    def download_node(
+        self,
+        product_id: str,
+        *path: str,
+        destination: str | Path,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        resume: bool = False,
+    ) -> Path:
+        """Download a single file node from inside a product."""
+        if not path:
+            raise ValueError("A node path is required to download a node.")
+        url = f"{self._products_url}{_node_segments(product_id, path)}/$value"
+        return download_to_file(
+            self._transport,
+            url,
+            Path(destination),
+            chunk_size=chunk_size,
+            resume=resume,
+        )
+
+
+def _node_segments(product_id: str, path: Sequence[str]) -> str:
+    """Build the URL path for a product node, escaping each node name."""
+    segments = f"({product_id})"
+    for name in path:
+        segments += f"/Nodes({quote(name, safe='')})"
+    return segments

@@ -106,6 +106,19 @@ class FilterBuilder:
         self._conditions.append(f"PublicationDate le {_format_datetime(end)}")
         return self
 
+    def deleted_between(
+        self, start: datetime | date, end: datetime | date
+    ) -> FilterBuilder:
+        """Match products deleted within the given range (DeletedProducts only)."""
+        self._conditions.append(f"DeletionDate ge {_format_datetime(start)}")
+        self._conditions.append(f"DeletionDate le {_format_datetime(end)}")
+        return self
+
+    def deletion_cause(self, cause: str) -> FilterBuilder:
+        """Match deleted products by their deletion cause (DeletedProducts only)."""
+        self._conditions.append(f"DeletionCause eq '{escape_literal(cause)}'")
+        return self
+
     def intersects(self, geometry: str, *, srid: int = 4326) -> FilterBuilder:
         """Match products intersecting a WKT geometry, for example a polygon."""
         self._conditions.append(
@@ -147,3 +160,12 @@ class FilterBuilder:
 def build_orderby(field: str, direction: SortDirection = "asc") -> str:
     """Build an ``$orderby`` clause, for example ``ContentDate/Start desc``."""
     return f"{field} {direction}"
+
+
+def resolve_filter(query: str | FilterBuilder | None) -> str | None:
+    """Resolve a query argument to a ``$filter`` string, or ``None`` when empty."""
+    if query is None:
+        return None
+    if isinstance(query, FilterBuilder):
+        return query.build() or None
+    return query or None

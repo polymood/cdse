@@ -15,7 +15,7 @@ from cdse.auth.manager import TokenManager
 from cdse.auth.providers import AuthProvider
 from cdse.auth.store import TokenStore
 from cdse.config import Settings
-from cdse.odata.products import ProductsResource
+from cdse.odata.api import OData
 from cdse.transport import Transport
 
 
@@ -49,8 +49,9 @@ class Client:
         )
         self._transport = Transport(self._http, self._tokens, settings=self._settings)
 
-        #: Access to the OData catalogue products endpoints.
-        self.odata = ProductsResource(self._transport, self._settings.odata_url)
+        #: Access to the OData catalogue endpoints (products, deleted
+        #: products, and attributes).
+        self.odata = OData(self._transport, self._settings.odata_url)
 
     @property
     def settings(self) -> Settings:
