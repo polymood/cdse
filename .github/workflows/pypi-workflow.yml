@@ -45,3 +45,38 @@ jobs:
 
       - name: Publish with trusted publishing
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    name: Create the GitHub release
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Extract the changelog section for this version
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '
+            $0 ~ "^## \\[" v "\\]" {flag=1; next}
+            /^## \[/ {flag=0}
+            flag {print}
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "Release ${GITHUB_REF_NAME}" > release-notes.md
+          fi
+
+      - name: Create the release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "cdse ${{ github.ref_name }}"
+          body_path: release-notes.md
+          files: dist/*

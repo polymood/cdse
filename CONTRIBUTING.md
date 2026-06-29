@@ -326,8 +326,10 @@ the result. The process is:
    ```
 
 5. Pushing the tag triggers the publish workflow (`pypi-workflow.yml`), which
-   builds the distributions and publishes them to PyPI using a trusted
-   publisher, so no API token is stored in the repository.
+   builds the distributions, publishes them to PyPI using a trusted publisher
+   (so no API token is stored in the repository), and creates the GitHub
+   release with notes taken from the matching changelog section. No manual
+   release command is needed; pushing the tag is enough.
 
 Tags must always point to a commit on `main` and must never be moved or deleted
 once published. After the release, `main` is merged back into `develop` if the
