@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-06-29
+
+### Fixed
+
+- The README banner now uses an absolute image URL so it renders on the PyPI
+  project page as well as on GitHub.
+
 ## [0.1.0] - 2026-06-29
 
 ### Added
@@ -29,5 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - A `cdse` command line interface for authentication, search, and download,
   with a file backed session store, available through the optional `cli` extra.
 
-[Unreleased]: https://github.com/polymood/cdse/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/polymood/cdse/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/polymood/cdse/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/polymood/cdse/releases/tag/v0.1.0

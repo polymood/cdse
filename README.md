@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" alt="Sentinel-2 imagery over six locations, fetched with cdse" width="100%">
+  <img src="https://raw.githubusercontent.com/polymood/cdse/main/assets/banner.png" alt="Sentinel-2 imagery over six locations, fetched with cdse" width="100%">
 </p>
 
 <p align="center">

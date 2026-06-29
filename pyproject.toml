@@ -1,6 +1,6 @@
 [project]
 name = "cdse"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python client for the Copernicus Data Space Ecosystem (CDSE) APIs"
 readme = "README.md"
 requires-python = ">=3.12"
