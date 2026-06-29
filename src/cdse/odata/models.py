@@ -113,3 +113,57 @@ class ProductPage(BaseModel):
     value: list[Product] = Field(default_factory=list)
     next_link: str | None = Field(default=None, alias="@odata.nextLink")
     count: int | None = Field(default=None, alias="@odata.count")
+
+
+class DeletedProductPage(BaseModel):
+    """A single page of a deleted products query."""
+
+    model_config = _CONFIG
+
+    value: list[DeletedProduct] = Field(default_factory=list)
+    next_link: str | None = Field(default=None, alias="@odata.nextLink")
+    count: int | None = Field(default=None, alias="@odata.count")
+
+
+class NodeLink(BaseModel):
+    """A link to the children of a node."""
+
+    model_config = _CONFIG
+
+    uri: str | None = Field(default=None, alias="uri")
+
+
+class Node(BaseModel):
+    """A node in a product's internal file tree.
+
+    The exact response shape for node listings is not fully documented; the
+    fields here are parsed leniently and unknown keys are ignored, so the shape
+    should be confirmed against the live API before relying on it.
+    """
+
+    model_config = _CONFIG
+
+    name: str = Field(alias="Name")
+    id: str | None = Field(default=None, alias="Id")
+    content_length: int | None = Field(default=None, alias="ContentLength")
+    children_number: int | None = Field(default=None, alias="ChildrenNumber")
+    nodes: NodeLink | None = Field(default=None, alias="Nodes")
+
+    @property
+    def is_directory(self) -> bool:
+        """Whether this node has children and is therefore a directory."""
+        return bool(self.children_number)
+
+
+class AttributeDefinition(BaseModel):
+    """A queryable attribute exposed by the ``Attributes`` endpoint.
+
+    The response shape for this endpoint is not documented in detail, so the
+    model is lenient and should be confirmed against the live API.
+    """
+
+    model_config = _CONFIG
+
+    name: str | None = Field(default=None, alias="Name")
+    value_type: str | None = Field(default=None, alias="ValueType")
+    odata_type: str | None = Field(default=None, alias="@odata.type")
