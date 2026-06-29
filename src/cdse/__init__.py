@@ -20,6 +20,12 @@ from cdse.exceptions import (
     ServerError,
     TransportError,
 )
+from cdse.odata import (
+    FilterBuilder,
+    Product,
+    ProductPage,
+    build_orderby,
+)
 
 __version__ = "0.1.0"
 
@@ -29,8 +35,11 @@ __all__ = [
     "CdseHTTPError",
     "Client",
     "ClientCredentialsAuth",
+    "FilterBuilder",
     "NotFoundError",
     "PasswordAuth",
+    "Product",
+    "ProductPage",
     "QuotaExceededError",
     "RateLimitError",
     "ReauthRequiredError",
@@ -39,4 +48,5 @@ __all__ = [
     "Settings",
     "TransportError",
     "__version__",
+    "build_orderby",
 ]

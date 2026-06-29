@@ -15,6 +15,7 @@ from cdse.auth.manager import TokenManager
 from cdse.auth.providers import AuthProvider
 from cdse.auth.store import TokenStore
 from cdse.config import Settings
+from cdse.odata.products import ProductsResource
 from cdse.transport import Transport
 
 
@@ -47,8 +48,9 @@ class Client:
             expiry_skew=self._settings.expiry_skew,
         )
         self._transport = Transport(self._http, self._tokens, settings=self._settings)
-        # Resource groups are attached here as they are implemented, for
-        # example ``self.odata = ProductsResource(self._transport, ...)``.
+
+        #: Access to the OData catalogue products endpoints.
+        self.odata = ProductsResource(self._transport, self._settings.odata_url)
 
     @property
     def settings(self) -> Settings:
