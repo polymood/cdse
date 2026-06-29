@@ -32,6 +32,11 @@ from cdse.stac import (
     Item,
     ItemCollection,
 )
+from cdse.subscriptions import (
+    Notification,
+    Subscription,
+    SubscriptionsResource,
+)
 
 __version__ = "0.1.0"
 
@@ -46,6 +51,7 @@ __all__ = [
     "Item",
     "ItemCollection",
     "NotFoundError",
+    "Notification",
     "PasswordAuth",
     "Product",
     "ProductPage",
@@ -56,6 +62,8 @@ __all__ = [
     "S3Client",
     "ServerError",
     "Settings",
+    "Subscription",
+    "SubscriptionsResource",
     "TransportError",
     "__version__",
     "build_orderby",
