@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 
 from pydantic import BaseModel
 
@@ -78,3 +79,35 @@ class MemoryTokenStore(TokenStore):
 
     def clear(self) -> None:
         self._tokens = None
+
+
+class FileTokenStore(TokenStore):
+    """Persist tokens to a JSON file with owner only permissions.
+
+    This lets a command line login survive across separate process
+    invocations. The file is written with mode ``0o600`` so that other users
+    cannot read the stored tokens.
+    """
+
+    def __init__(self, path: Path) -> None:
+        self._path = Path(path)
+
+    @property
+    def path(self) -> Path:
+        return self._path
+
+    def load(self) -> TokenSet | None:
+        if not self._path.exists():
+            return None
+        try:
+            return TokenSet.model_validate_json(self._path.read_text())
+        except (OSError, ValueError):
+            return None
+
+    def save(self, tokens: TokenSet) -> None:
+        self._path.parent.mkdir(parents=True, exist_ok=True)
+        self._path.write_text(tokens.model_dump_json())
+        self._path.chmod(0o600)
+
+    def clear(self) -> None:
+        self._path.unlink(missing_ok=True)
